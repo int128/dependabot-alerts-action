@@ -1,15 +1,21 @@
-name: typescript-action-with-graphql-codegen
-description: Template of TypeScript Action
+name: dependabot-alerts-action
+description: List the Dependabot alerts for a repository
 
 inputs:
-  sha:
-    description: Target commit SHA
+  path:
+    description: Glob pattern of the file path to check for alerts
     required: true
-    default: ${{ github.sha }}
+  package-ecosystem:
+    description: List of package ecosystems (e.g. `NPM`)
+    required: true
   token:
     description: GitHub Token
     required: true
     default: ${{ github.token }}
+
+outputs:
+  packages-lines:
+    description: Packages in the format of `package-name@first-patched-version`
 
 runs:
   using: 'node20'

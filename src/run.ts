@@ -1,33 +1,34 @@
-import assert from 'node:assert'
 import * as core from '@actions/core'
 import type { Octokit } from '@octokit/action'
 import type * as github from './github.js'
-import { getAssociatedPullRequest } from './queries/getAssociatedPullRequest.js'
+import { getVulnerabilityAlertsQuery } from './queries/getVulnerabilityAlerts.js'
+import { filterVulnerabilityAlerts, parseVulnerabilityAlerts } from './vulnerabilityAlerts.js'
 
 type Inputs = {
-  sha: string
+  path: string[]
+  packageEcosystem: string[]
 }
 
-export const run = async (inputs: Inputs, octokit: Octokit, context: github.Context): Promise<void> => {
-  core.info(`Getting the associated pull request for the commit ${inputs.sha}`)
-  const associatedPullRequest = await getAssociatedPullRequest(octokit, {
+type Outputs = {
+  packagesLines: string
+}
+
+export const run = async (inputs: Inputs, octokit: Octokit, context: github.Context): Promise<Outputs> => {
+  const vulnerabilityAlertsQuery = await getVulnerabilityAlertsQuery(octokit, {
     owner: context.repo.owner,
     name: context.repo.repo,
-    expression: inputs.sha,
   })
+  const vulnerabilityAlerts = parseVulnerabilityAlerts(vulnerabilityAlertsQuery)
+  core.info(`Total ${vulnerabilityAlerts.length} vulnerability alerts`)
 
-  assert(associatedPullRequest.repository)
-  assert(associatedPullRequest.repository.object)
-  assert.strictEqual(associatedPullRequest.repository.object.__typename, 'Commit')
-  assert(associatedPullRequest.repository.object.associatedPullRequests)
-  assert(associatedPullRequest.repository.object.associatedPullRequests.nodes != null)
+  const filteredVulnerabilityAlerts = filterVulnerabilityAlerts(vulnerabilityAlerts, {
+    pathPatterns: inputs.path,
+    packageEcosystems: inputs.packageEcosystem,
+  })
+  core.info(`Found ${filteredVulnerabilityAlerts.length} vulnerability alerts for the specified path patterns`)
 
-  if (associatedPullRequest.repository.object.associatedPullRequests.nodes.length === 0) {
-    core.info('No associated pull request found')
-    return
-  }
-  for (const node of associatedPullRequest.repository.object.associatedPullRequests.nodes) {
-    assert(node != null)
-    core.info(`Found associated pull request #${node.number}`)
-  }
+  const packagesLines = filteredVulnerabilityAlerts
+    .map((vulnerabilityAlert) => `${vulnerabilityAlert.packageName}@${vulnerabilityAlert.firstPatchedVersion ?? ''}`)
+    .join('\n')
+  return { packagesLines }
 }

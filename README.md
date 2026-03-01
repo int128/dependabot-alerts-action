@@ -16,14 +16,14 @@ jobs:
 
 ### Inputs
 
-| Name    | Default        | Description                                       |
-| ------- | -------------- | ------------------------------------------------- |
-| `path`  | -              | Glob pattern of the file path to check for alerts |
-| `token` | `github.token` | GitHub token                                      |
+| Name                | Default        | Description                                       |
+| ------------------- | -------------- | ------------------------------------------------- |
+| `path`              | (required)     | Glob pattern of the file path to check for alerts |
+| `package-ecosystem` | (required)     | List of package ecosystems (e.g. `NPM`)           |
+| `token`             | `github.token` | GitHub token                                      |
 
 ### Outputs
 
-| Name             | Description                 |
-| ---------------- | --------------------------- |
-| `packages-json`  | JSON string of the packages |
-| `packages-lines` | Lines of the packages       |
+| Name             | Description                                                    |
+| ---------------- | -------------------------------------------------------------- |
+| `packages-lines` | Packages in the format of `package-name@first-patched-version` |

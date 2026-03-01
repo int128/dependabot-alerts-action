@@ -3,13 +3,15 @@ import * as github from './github.js'
 import { run } from './run.js'
 
 const main = async (): Promise<void> => {
-  await run(
+  const outputs = await run(
     {
-      path: core.getMultilineInput('path'), //, { required: true }),
+      path: core.getMultilineInput('path', { required: true }),
+      packageEcosystem: core.getMultilineInput('package-ecosystem', { required: true }),
     },
     github.getOctokit(),
     github.getContext(),
   )
+  core.setOutput('packages-lines', outputs.packagesLines)
 }
 
 try {

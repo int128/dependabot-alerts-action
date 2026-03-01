@@ -28,7 +28,7 @@ export const run = async (inputs: Inputs, octokit: Octokit, context: github.Cont
   core.info(`Found ${filteredVulnerabilityAlerts.length} vulnerability alerts for the specified path patterns`)
 
   const packagesLines = filteredVulnerabilityAlerts
-    .map((vulnerabilityAlert) => `${vulnerabilityAlert.packageName}@${vulnerabilityAlert.firstPatchedVersion}`)
+    .map((vulnerabilityAlert) => `${vulnerabilityAlert.packageName}@${vulnerabilityAlert.firstPatchedVersion ?? ''}`)
     .join('\n')
   return { packagesLines }
 }

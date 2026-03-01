@@ -5,14 +5,16 @@ import { run } from './run.js'
 const main = async (): Promise<void> => {
   await run(
     {
-      sha: core.getInput('sha', { required: true }),
+      path: core.getMultilineInput('path'), //, { required: true }),
     },
     github.getOctokit(),
     github.getContext(),
   )
 }
 
-main().catch((e: Error) => {
-  core.setFailed(e)
+try {
+  await main()
+} catch (e: unknown) {
+  core.setFailed(e instanceof Error ? e : String(e))
   console.error(e)
-})
+}

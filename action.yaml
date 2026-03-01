@@ -1,4 +1,4 @@
-name: typescript-action-with-graphql-codegen
+name: dependabot-alerts-action
 description: Template of TypeScript Action
 
 inputs:

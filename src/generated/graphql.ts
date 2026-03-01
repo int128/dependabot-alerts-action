@@ -1,15 +1,10 @@
 import * as Types from './graphql-types.js';
 
-export type GetAssociatedPullRequestQueryVariables = Types.Exact<{
+export type GetVulnerabilityAlertsQueryVariables = Types.Exact<{
   owner: Types.Scalars['String']['input'];
   name: Types.Scalars['String']['input'];
-  expression: Types.Scalars['String']['input'];
+  after?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
 
 
-export type GetAssociatedPullRequestQuery = { __typename?: 'Query', rateLimit?: { __typename?: 'RateLimit', cost: number, remaining: number } | null, repository?: { __typename?: 'Repository', object?:
-      | { __typename: 'Blob' }
-      | { __typename: 'Commit', associatedPullRequests?: { __typename?: 'PullRequestConnection', nodes?: Array<{ __typename?: 'PullRequest', number: number } | null> | null } | null }
-      | { __typename: 'Tag' }
-      | { __typename: 'Tree' }
-     | null } | null };
+export type GetVulnerabilityAlertsQuery = { __typename?: 'Query', repository?: { __typename?: 'Repository', vulnerabilityAlerts?: { __typename?: 'RepositoryVulnerabilityAlertConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, nodes?: Array<{ __typename?: 'RepositoryVulnerabilityAlert', vulnerableManifestPath: string, securityVulnerability?: { __typename?: 'SecurityVulnerability', severity: Types.SecurityAdvisorySeverity, package: { __typename?: 'SecurityAdvisoryPackage', ecosystem: Types.SecurityAdvisoryEcosystem, name: string }, firstPatchedVersion?: { __typename?: 'SecurityAdvisoryPackageVersion', identifier: string } | null } | null } | null> | null } | null } | null };

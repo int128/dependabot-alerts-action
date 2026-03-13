@@ -24,6 +24,7 @@ jobs:
 
 ### Outputs
 
-| Name             | Description                                                    |
-| ---------------- | -------------------------------------------------------------- |
-| `packages-lines` | Packages in the format of `package-name@first-patched-version` |
+| Name             | Description                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------ |
+| `packages-lines` | Multiline string in the format of `package-name@version`                                         |
+| `packages-json`  | JSON object with package names as keys and versions as values (e.g. `{"package-name": "1.2.3"}`) |

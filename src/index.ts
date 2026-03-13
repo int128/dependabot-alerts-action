@@ -12,6 +12,7 @@ const main = async (): Promise<void> => {
     github.getContext(),
   )
   core.setOutput('packages-lines', outputs.packagesLines)
+  core.setOutput('packages-json', JSON.stringify(outputs.packagesJson))
 }
 
 try {

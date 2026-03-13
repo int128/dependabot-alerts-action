@@ -15,6 +15,7 @@ type Inputs = {
 
 type Outputs = {
   packagesLines: string
+  packagesJson: Record<string, string>
 }
 
 export const run = async (inputs: Inputs, octokit: Octokit, context: github.Context): Promise<Outputs> => {
@@ -34,7 +35,12 @@ export const run = async (inputs: Inputs, octokit: Octokit, context: github.Cont
   core.info(`Found ${vulnerabilityAlerts.length} vulnerability alerts for the specified path patterns`)
 
   const packagesLines = vulnerabilityAlerts
-    .map((vulnerabilityAlert) => `${vulnerabilityAlert.packageName}@${vulnerabilityAlert.firstPatchedVersion ?? ''}`)
+    .map((vulnerabilityAlert) => `${vulnerabilityAlert.packageName}@${vulnerabilityAlert.firstPatchedVersion}`)
     .join('\n')
-  return { packagesLines }
+
+  const packagesJson = Object.fromEntries(
+    vulnerabilityAlerts.map((vulnerabilityAlert) => [vulnerabilityAlert.packageName, vulnerabilityAlert.firstPatchedVersion]),
+  )
+
+  return { packagesLines, packagesJson }
 }

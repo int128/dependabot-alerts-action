@@ -39,7 +39,10 @@ export const run = async (inputs: Inputs, octokit: Octokit, context: github.Cont
     .join('\n')
 
   const packagesJson = Object.fromEntries(
-    vulnerabilityAlerts.map((vulnerabilityAlert) => [vulnerabilityAlert.packageName, vulnerabilityAlert.firstPatchedVersion]),
+    vulnerabilityAlerts.map((vulnerabilityAlert) => [
+      vulnerabilityAlert.packageName,
+      vulnerabilityAlert.firstPatchedVersion,
+    ]),
   )
 
   return { packagesLines, packagesJson }

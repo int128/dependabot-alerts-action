@@ -11,6 +11,10 @@ const main = async (): Promise<void> => {
     github.getOctokit(),
     github.getContext(),
   )
+  core.startGroup('Outputs')
+  core.info(JSON.stringify(outputs, null, 2))
+  core.endGroup()
+  core.setOutput('paths-json', JSON.stringify(outputs.pathsJson))
   core.setOutput('packages-lines', outputs.packagesLines)
   core.setOutput('packages-json', JSON.stringify(outputs.packagesJson))
 }

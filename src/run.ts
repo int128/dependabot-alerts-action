@@ -3,7 +3,7 @@ import type { Octokit } from '@octokit/action'
 import type * as github from './github.js'
 import { getVulnerabilityAlertsQuery } from './queries/getVulnerabilityAlerts.js'
 import {
-  dedupeVulnerabilityAlerts,
+  dedupeVulnerabilityPackages,
   filterVulnerabilityAlerts,
   parseVulnerabilityAlerts,
 } from './vulnerabilityAlerts.js'
@@ -14,7 +14,7 @@ type Inputs = {
 }
 
 type Outputs = {
-  pathsJson: string[]
+  dependencyFiles: string[]
   packagesLines: string
   packagesJson: Record<string, string>
 }
@@ -27,21 +27,23 @@ export const run = async (inputs: Inputs, octokit: Octokit, context: github.Cont
   const rawVulnerabilityAlerts = parseVulnerabilityAlerts(vulnerabilityAlertsQuery)
   core.info(`Total ${rawVulnerabilityAlerts.length} vulnerability alerts`)
 
-  const vulnerabilityAlerts = dedupeVulnerabilityAlerts(
+  const dependencyFiles = [...new Set(rawVulnerabilityAlerts.map((vulnerabilityAlert) => vulnerabilityAlert.path))]
+
+  const vulnerabilityPackages = dedupeVulnerabilityPackages(
     filterVulnerabilityAlerts(rawVulnerabilityAlerts, {
       pathPatterns: inputs.path,
       packageEcosystems: inputs.packageEcosystem,
     }),
   )
-  core.info(`Found ${vulnerabilityAlerts.length} vulnerability alerts for the specified path patterns`)
+  core.info(`Found ${vulnerabilityPackages.length} packages for the specified path patterns`)
 
   return {
-    pathsJson: vulnerabilityAlerts.map((vulnerabilityAlert) => vulnerabilityAlert.path),
-    packagesLines: vulnerabilityAlerts
+    dependencyFiles,
+    packagesLines: vulnerabilityPackages
       .map((vulnerabilityAlert) => `${vulnerabilityAlert.packageName}@${vulnerabilityAlert.firstPatchedVersion}`)
       .join('\n'),
     packagesJson: Object.fromEntries(
-      vulnerabilityAlerts.map((vulnerabilityAlert) => [
+      vulnerabilityPackages.map((vulnerabilityAlert) => [
         vulnerabilityAlert.packageName,
         vulnerabilityAlert.firstPatchedVersion,
       ]),

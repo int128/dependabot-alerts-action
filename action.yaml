@@ -14,8 +14,8 @@ inputs:
     default: ${{ github.token }}
 
 outputs:
-  paths-json:
-    description: JSON array of file paths with Dependabot alerts
+  dependency-files-json:
+    description: JSON array of dependency file paths with Dependabot alerts
   packages-lines:
     description: Multiline string in the format of `package-name@version`
   packages-json:

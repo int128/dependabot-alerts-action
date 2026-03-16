@@ -24,19 +24,19 @@ export const run = async (inputs: Inputs, octokit: Octokit, context: github.Cont
     owner: context.repo.owner,
     name: context.repo.repo,
   })
-  const rawVulnerabilityAlerts = parseVulnerabilityAlerts(vulnerabilityAlertsQuery)
-  core.info(`Total ${rawVulnerabilityAlerts.length} vulnerability alerts`)
+  const vulnerabilityAlerts = parseVulnerabilityAlerts(vulnerabilityAlertsQuery)
+  core.info(`Total ${vulnerabilityAlerts.length} vulnerability alerts in the repository`)
 
-  const dependencyFiles = [...new Set(rawVulnerabilityAlerts.map((vulnerabilityAlert) => vulnerabilityAlert.path))]
-
-  const vulnerabilityPackages = dedupeVulnerabilityPackages(
-    filterVulnerabilityAlerts(rawVulnerabilityAlerts, {
-      pathPatterns: inputs.path,
-      packageEcosystems: inputs.packageEcosystem,
-    }),
+  const filteredVulnerabilityAlerts = filterVulnerabilityAlerts(vulnerabilityAlerts, {
+    pathPatterns: inputs.path,
+    packageEcosystems: inputs.packageEcosystem,
+  })
+  core.info(
+    `Found ${filteredVulnerabilityAlerts.length} vulnerability alerts for the specified path patterns and package ecosystems`,
   )
-  core.info(`Found ${vulnerabilityPackages.length} packages for the specified path patterns`)
 
+  const dependencyFiles = [...new Set(filteredVulnerabilityAlerts.map((vulnerabilityAlert) => vulnerabilityAlert.path))]
+  const vulnerabilityPackages = dedupeVulnerabilityPackages(filteredVulnerabilityAlerts)
   return {
     dependencyFiles,
     packagesLines: vulnerabilityPackages

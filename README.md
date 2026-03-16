@@ -24,8 +24,8 @@ jobs:
 
 ### Outputs
 
-| Name             | Description                                                                                      |
-| ---------------- | ------------------------------------------------------------------------------------------------ |
-| `paths-json`     | JSON array of file paths with Dependabot alerts                                                  |
-| `packages-lines` | Multiline string in the format of `package-name@version`                                         |
-| `packages-json`  | JSON object with package names as keys and versions as values (e.g. `{"package-name": "1.2.3"}`) |
+| Name                    | Description                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------ |
+| `dependency-files-json` | JSON array of dependency file paths with Dependabot alerts                                       |
+| `packages-lines`        | Multiline string in the format of `package-name@version`                                         |
+| `packages-json`         | JSON object with package names as keys and versions as values (e.g. `{"package-name": "1.2.3"}`) |

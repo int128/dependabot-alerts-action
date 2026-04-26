@@ -31,8 +31,8 @@ jobs:
       - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version-file: .node-version
-          package-manager-cache: false
-      - run: npm install -g pnpm@latest-10
+      - run: npm install -g corepack
+      - run: corepack enable
       - run: pnpm i
       - run: pnpm test
 
@@ -44,8 +44,8 @@ jobs:
       - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version-file: .node-version
-          package-manager-cache: false
-      - run: npm install -g pnpm@latest-10
+      - run: npm install -g corepack
+      - run: corepack enable
       - run: pnpm i
       - run: pnpm build
       - name: Run int128/dependabot-alerts-action
@@ -68,8 +68,8 @@ jobs:
       - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version-file: .node-version
-          package-manager-cache: false
-      - run: npm install -g pnpm@latest-10
+      - run: npm install -g corepack
+      - run: corepack enable
       - run: pnpm i
       - run: pnpm run check
       - run: pnpm graphql-codegen

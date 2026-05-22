@@ -22,5 +22,5 @@ outputs:
     description: JSON object with package names as keys and versions as values
 
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'

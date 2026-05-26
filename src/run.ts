@@ -17,6 +17,7 @@ type Outputs = {
   dependencyFiles: string[]
   packagesLines: string
   packagesJson: Record<string, string>
+  packagesCount: number
 }
 
 export const run = async (inputs: Inputs, octokit: Octokit, context: github.Context): Promise<Outputs> => {
@@ -48,5 +49,6 @@ export const run = async (inputs: Inputs, octokit: Octokit, context: github.Cont
         vulnerabilityAlert.firstPatchedVersion,
       ]),
     ),
+    packagesCount: vulnerabilityPackages.length,
   }
 }

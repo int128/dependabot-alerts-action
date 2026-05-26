@@ -20,6 +20,8 @@ outputs:
     description: Multiline string in the format of `package-name@version`
   packages-json:
     description: JSON object with package names as keys and versions as values
+  packages-count:
+    description: Number of packages with Dependabot alerts
 
 runs:
   using: 'node24'

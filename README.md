@@ -4,12 +4,40 @@ This is an action to list the Dependabot alerts for a repository.
 
 ## Getting Started
 
+Here is an example workflow to use this action:
+
 ```yaml
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  notify:
+    runs-on: ubuntu-slim
+    permissions:
+      vulnerability-alerts: read
     steps:
-      - uses: int128/dependabot-alerts-action@v1
+      - id: dependabot-alerts
+        uses: int128/dependabot-alerts-action@v0
+        with:
+          path: "**/*"
+          package-ecosystem: "*"
+```
+
+You can specify the `path` input to filter the dependency files to check for alerts.
+It supports glob patterns with negation patterns (e.g. `!**/package-lock.json`) and multiple patterns separated by newlines.
+
+```yaml
+- uses: int128/dependabot-alerts-action@v0
+  with:
+    path: |
+      frontend/package-lock.json
+```
+
+You can specify the `package-ecosystem` input to filter the package ecosystems to check for alerts.
+It supports glob patterns with negation patterns (e.g. `!NPM`) and multiple patterns separated by newlines.
+
+```yaml
+- uses: int128/dependabot-alerts-action@v0
+  with:
+    package-ecosystem: |
+      NPM
 ```
 
 ## Specification
@@ -19,7 +47,7 @@ jobs:
 | Name                | Default        | Description                                       |
 | ------------------- | -------------- | ------------------------------------------------- |
 | `path`              | (required)     | Glob pattern of the file path to check for alerts |
-| `package-ecosystem` | (required)     | List of package ecosystems (e.g. `NPM`)           |
+| `package-ecosystem` | (required)     | Glob pattern of package ecosystems (e.g. `NPM`)   |
 | `token`             | `github.token` | GitHub token                                      |
 
 ### Outputs

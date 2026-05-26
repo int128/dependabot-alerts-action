@@ -17,6 +17,7 @@ const main = async (): Promise<void> => {
   core.setOutput('dependency-files-json', JSON.stringify(outputs.dependencyFiles))
   core.setOutput('packages-lines', outputs.packagesLines)
   core.setOutput('packages-json', JSON.stringify(outputs.packagesJson))
+  core.setOutput('packages-count', outputs.packagesCount)
 }
 
 try {

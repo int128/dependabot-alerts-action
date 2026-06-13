@@ -21,13 +21,24 @@ jobs:
 ```
 
 You can specify the `path` input to filter the dependency files to check for alerts.
-It supports glob patterns with negation patterns (e.g. `!**/package-lock.json`) and multiple patterns separated by newlines.
+It supports multiple patterns separated by newlines.
 
 ```yaml
 - uses: int128/dependabot-alerts-action@v0
   with:
     path: |
       frontend/package-lock.json
+      backend/pom.xml
+```
+
+It also supports negation patterns to exclude certain files.
+
+```yaml
+- uses: int128/dependabot-alerts-action@v0
+  with:
+    path: |
+      **
+      !**/package-lock.json
 ```
 
 You can specify the `package-ecosystem` input to filter the package ecosystems to check for alerts.
